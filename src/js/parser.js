@@ -1,5 +1,8 @@
 
 var showdown = require('../../node_modules/showdown');
+function showdownParse(md, gh) {
+    return (new showdown.converter()).makeHtml(md, gh);
+}
 
 var _headingLevel;
 
@@ -19,7 +22,7 @@ exports.parseDoc = function(mdown, headingLevel){
 };
 
 exports.parseMdown = function(mdown){
-    return showdown.parse(mdown);
+    return showdownParse(mdown);
 };
 
 
@@ -81,7 +84,7 @@ function getDescription(mdown, fromIndex) {
         return null;
     }
 
-    desc = showdown.parse(desc.replace(/\n+/, ' '))
+    desc = showdownParse(desc.replace(/\n+/, ' '))
                     .replace(/<\/?p>/g, '') //remove paragraphs
                     .replace(/<\/?a[^>]*>/g, ''); //remove links since it breaks layout
     return desc;
@@ -109,7 +112,7 @@ function parseContent(mdown, toc){
         tocContent += ' - ['+ val.name +'](#'+ val.href +')\n';
     });
 
-    return showdown.parse( pre + tocContent + post );
+    return showdownParse( pre + tocContent + post );
 }
 
 
