@@ -1,5 +1,5 @@
 
-var showdown = require('./lib/showdown');
+var showdown = require('../../node_modules/showdown');
 
 var _headingLevel;
 

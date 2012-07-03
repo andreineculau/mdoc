@@ -25,7 +25,8 @@
     "dependencies" : {
         "wrench" : ">= 1.3.2",
         "handlebars" : ">= 1.0.1",
-        "commander" : ">= 0.4.0"
+        "commander" : ">= 0.4.0",
+        "showdown" : "git://github.com/coreyti/showdown.git#f68216820aeb490e32b196d014301447148611f9"
     },
     "bin" : {
         "mdoc" : "./bin/mdoc"

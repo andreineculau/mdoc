@@ -1,3 +1,0 @@
-[submodule "lib/showdown"]
-	path = lib/showdown
-	url = git://github.com/coreyti/showdown.git
