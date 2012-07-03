@@ -1,3 +1,6 @@
+# Changes introduced by the fork
+* use a non Github-Flavored-Markdown, specifically https://github.com/coreyti/showdown .
+
 # mdoc - a simple markdown based documentation generator
 
 This is a simple markdown based documentation generator, it will search all the
