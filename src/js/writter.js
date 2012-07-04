@@ -66,6 +66,9 @@ exports.processFiles = function(config){
     var assetsPath = config.assetsPath || path.normalize(_baseTemplatePath +'/assets_');
     wrench.copyDirSyncRecursive(assetsPath, path.join(outputDir, 'assets_/'), {resolveSymbolicLinks: true});
 
+    console.log('  Copying Sources...');
+    wrench.copyDirSyncRecursive(config.inputDir, outputDir, {resolveSymbolicLinks: true});
+
     console.log('  Finished.');
 };
 
