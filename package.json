@@ -23,9 +23,9 @@
         }
     ],
     "dependencies" : {
-        "wrench" : ">= 1.3.2",
-        "handlebars" : ">= 1.0.1",
-        "commander" : ">= 0.4.0",
+        "wrench" : "git://github.com/andreineculau/wrench-js.git#71b7af6164b7c1fc562ab6cdb1e1425d41ee7b6f",
+        "handlebars" : "~1.0.1",
+        "commander" : "~0.6.0",
         "showdown" : "git://github.com/coreyti/showdown.git#f68216820aeb490e32b196d014301447148611f9"
     },
     "bin" : {
