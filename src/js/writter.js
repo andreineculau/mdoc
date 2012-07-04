@@ -43,6 +43,9 @@ function compileAllTemplates(config){
 
 
 exports.processFiles = function(config){
+    console.log('  Copying Sources...');
+    wrench.copyDirSyncRecursive(config.inputDir, config.outputDir, {resolveSymbolicLinks: true});
+
     console.log('  Converting files...');
 
     compileAllTemplates(config);
@@ -64,10 +67,7 @@ exports.processFiles = function(config){
 
     console.log('  Copying Assets...');
     var assetsPath = config.assetsPath || path.normalize(_baseTemplatePath +'/assets_');
-    wrench.copyDirSyncRecursive(assetsPath, path.join(outputDir, 'assets_/'), {resolveSymbolicLinks: true});
-
-    console.log('  Copying Sources...');
-    wrench.copyDirSyncRecursive(config.inputDir, outputDir, {resolveSymbolicLinks: true});
+    wrench.copyDirSyncRecursive(assetsPath, path.join(outputDir, 'assets_'), {resolveSymbolicLinks: true});
 
     console.log('  Finished.');
 };
