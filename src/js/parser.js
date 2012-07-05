@@ -9,7 +9,6 @@ var _headingLevel;
 
 exports.parseDoc = function(mdown, headingLevel){
     mdown = normalizeLineBreaks(mdown);
-    mdown = convertCodeBlocks(mdown);
     _headingLevel = (headingLevel || 2);
 
     var toc = getTocData(mdown);
@@ -25,16 +24,6 @@ exports.parseMdown = function(mdown){
     return showdownParse(mdown);
 };
 
-
-function wrapCode(str, p1, p2){
-    return p1? '<pre class="brush:'+ p1 +'">\n'+ p2 +'</pre>' : '<pre>\n'+ p2 +'</pre>';
-}
-
-function convertCodeBlocks(mdown){
-    // showdown have issues with github style code blocks..
-    var re = /^```\s*(\w+)\s*$([\s\S]*?)^```$/gm;
-    return mdown.replace(re, wrapCode);
-}
 
 function normalizeLineBreaks(str, lineEnd) {
     lineEnd = lineEnd || '\n';
