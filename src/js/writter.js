@@ -97,9 +97,9 @@ function processDoc(config){
             var relativeRoot = path.relative( fileInfo.output.replace(/\/[^\/]+$/, '/'), config.outputDir );
 
             return _docTemplate({
-                root_path : relativeRoot? relativeRoot +'/' : '',
+                root_path : relativeRoot ? relativeRoot : '.',
                 content : parseResult.html,
-                page_title : parseResult.title +' : '+ (config.baseTitle || DEFAULT_PAGE_TITLE)
+                page_title : parseResult.title + ' : ' + (config.baseTitle || DEFAULT_PAGE_TITLE)
             });
         });
         console.log('  processed: '+ fileInfo.input +' > '+ fileInfo.output);
