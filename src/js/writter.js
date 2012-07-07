@@ -62,7 +62,8 @@ exports.processFiles = function(config){
     fs.writeFileSync(path.join(outputDir, 'index.html'), _indexTemplate({
         modules : toc,
         page_title : config.baseTitle || DEFAULT_PAGE_TITLE,
-        content : getIndexContent(config)
+        content : getIndexContent(config),
+        root_path : '.'
     }), 'utf-8');
 
     console.log('  Copying Assets...');
