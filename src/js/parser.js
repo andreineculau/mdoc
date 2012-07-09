@@ -11,11 +11,11 @@ exports.parseDoc = function(mdown, headingLevel){
     mdown = normalizeLineBreaks(mdown);
     _headingLevel = (headingLevel || 2);
 
-    var toc = getTocData(mdown);
+    var result = parseContent(mdown);
 
     return {
-        toc : toc,
-        html :  parseContent(mdown, toc),
+        toc : result.toc,
+        html :  result.html,
         title : getTitle(mdown)
     };
 };
@@ -31,28 +31,6 @@ function normalizeLineBreaks(str, lineEnd) {
         .replace(/\r\n/g, lineEnd) // DOS
         .replace(/\r/g, lineEnd) // Mac
         .replace(/\n/g, lineEnd); // Unix
-}
-
-
-function getTocData(mdown){
-
-    var matchTitle,
-        matchName,
-        rH = getHeaderRegExp(),
-        rName = /([^\(#:%\?!,]+)(\(?)[^\)]*(\)?):?.*/,
-        toc = [];
-
-    while (matchTitle = rH.exec(mdown)) {
-        matchName = rName.exec(matchTitle[1]);
-        toc.push({
-           href : matchName[1],
-           title : matchTitle[1],
-           name : (matchName.slice(1,4).join('')),
-           description : getDescription(mdown, rH.lastIndex)
-        });
-    }
-
-    return toc;
 }
 
 function getHeaderRegExp(level){
@@ -79,29 +57,43 @@ function getDescription(mdown, fromIndex) {
     return desc;
 }
 
-function parseContent(mdown, toc){
-
-    // add deep-links
-
-    var i = 0, cur;
-
-    mdown = mdown.replace(getHeaderRegExp(), function(str){
-        cur = toc[i++];
-        return str +' <a href="#'+ cur.href +'" id="'+ cur.href +'" class="deep-link">#</a>';
-    });
+function parseContent(mdown){
+    var toc = [], result = {
+        html: '',
+        toc: []
+    };
 
     // generate TOC
-
     var tocIndex = mdown.search( new RegExp('^'+ getHeaderHashes() +'[^#]+', 'm') ), //first header
         pre = mdown.substring(0, tocIndex),
         post = mdown.substring(tocIndex),
-        tocContent = getHeaderHashes() +' Table of Contents <a href="#toc" name="toc" class="deep-link">#</a>\n\n';
+        tocContent = getHeaderHashes() +' Table of Contents <a id="toc"></a>\n\n<ul id="toc-list"></ul>\n\n';
 
-    toc.forEach(function(val, i){
-        tocContent += ' - ['+ val.name +'](#'+ val.href +')\n';
+    mdown = pre + tocContent + post;
+    result.html = showdownParse(mdown);
+
+    // add deep-links
+    result.html = result.html.replace(/<(h[2-9]) id="([^"]+)">([^\n]*)<\/(h[2-9])>/g, function(m, header, id, inner, close_header) {
+        var title = inner.replace(/<[^>]+>/g, '').trim();
+
+        if (title !== 'Table of Contents') {
+            result.toc.push({
+                title: title,
+                href: '#' + id
+            });
+        }
+
+        return '<' + header + ' id="' + id + '">' + inner + ' <a href="#' + id + '" class="deep-link">#</a></' + header + '>';
     });
 
-    return showdownParse( pre + tocContent + post );
+    tocContent = '';
+    result.toc.forEach(function(val, i){
+        tocContent += '<li><a href="'+ val.href +'">'+ val.title +'</a></li>\n';
+    });
+
+    result.html = result.html.replace(/<ul id="toc-list"><\/ul>/g, '<ul id="toc-list">' + tocContent + '</ul>');
+
+    return result;
 }
 
 
