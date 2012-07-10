@@ -79,7 +79,7 @@ function parseContent(mdown){
         if (title !== 'Table of Contents') {
             result.toc.push({
                 title: title,
-                href: '#' + id
+                id: id
             });
         }
 
@@ -88,7 +88,7 @@ function parseContent(mdown){
 
     tocContent = '';
     result.toc.forEach(function(val, i){
-        tocContent += '<li><a href="'+ val.href +'">'+ val.title +'</a></li>\n';
+        tocContent += '<li><a href="#'+ val.id +'">'+ val.title +'</a></li>\n';
     });
 
     result.html = result.html.replace(/<ul id="toc-list"><\/ul>/g, '<ul id="toc-list">' + tocContent + '</ul>');
